@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ABC Consultants – Client Portfolio</title>
+  <style>
+    :root{
+      --bg:#0f172a;            /* slate-900 */
+      --card:#111827;          /* gray-900 */
+      --muted:#94a3b8;         /* slate-400 */
+      --text:#e5e7eb;          /* gray-200 */
+      --accent:#60a5fa;        /* blue-400 */
+      --accent-2:#34d399;      /* emerald-400 */
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;scroll-behavior:smooth}
+
+    /* Header and nav */
+    header{
+      position:sticky;top:0;z-index:50;background:rgba(15,23,42,.8);backdrop-filter:blur(8px);border-bottom:1px solid rgba(148,163,184,.2)
+    }
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+    .nav{
+      display:flex;align-items:center;justify-content:space-between;height:64px
+    }
+    .brand{
+      display:flex;gap:10px;align-items:center;font-weight:800;font-size:20px;letter-spacing:.3px
+    }
+    .brand .name{color:var(--text)}
+    .brand .name span{color:var(--accent)}
+    nav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0}
+    nav a{
+      color:var(--muted);text-decoration:none;padding:8px 10px;border-radius:10px;transition:all .2s ease;font-weight:500
+    }
+    nav a:hover{color:var(--text);text-decoration:underline;transform:translateY(-1px)}
+
+    /* Sections */
+    section{padding:80px 0}
+    h2{margin:0 0 18px 0;font-size:28px}
+    p{line-height:1.7;color:#cbd5e1}
+
+    /* About */
+    .about{display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:center}
+    .avatar{
+      width:220px;height:220px;border-radius:20px;overflow:hidden;border:2px solid rgba(148,163,184,.2);box-shadow:0 10px 30px rgba(0,0,0,.35)
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
+    .pill{display:inline-block;background:rgba(96,165,250,.15);color:var(--accent);padding:6px 10px;border-radius:999px;font-size:12px;margin-bottom:10px;border:1px solid rgba(96,165,250,.3)}
+
+    /* Skills */
+    .skills{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px}
+    .skill{
+      background:var(--card);border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:16px;display:flex;gap:12px;align-items:center
+    }
+    .skill img{width:32px;height:32px}
+    .skill b{display:block;margin-bottom:4px}
+
+    /* Projects */
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+    .project{
+      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.0));border:1px solid rgba(148,163,184,.15);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px
+    }
+    .project small{color:var(--muted)}
+    .project a{margin-top:auto;color:var(--accent)}
+
+    /* Recommendations */
+    .recs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:16px}
+    .rec{
+      background:var(--card);border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:16px;position:relative
+    }
+    .rec:before{content:"\201C";position:absolute;top:-12px;left:12px;font-size:40px;color:rgba(96,165,250,.6)}
+    .rec cite{display:block;margin-top:10px;color:var(--muted)}
+
+    form{
+      display:grid;grid-template-columns:1fr auto;gap:12px;background:rgba(255,255,255,.02);border:1px solid rgba(148,163,184,.15);border-radius:16px;padding:16px
+    }
+    textarea{width:100%;min-height:90px;resize:vertical;background:#0b1220;color:var(--text);border:1px solid rgba(148,163,184,.25);border-radius:12px;padding:10px}
+    .actions{display:flex;gap:10px;align-items:center}
+    input[type="text"]{background:#0b1220;color:var(--text);border:1px solid rgba(148,163,184,.25);border-radius:12px;padding:10px}
+    button{
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(148,163,184,.25);cursor:pointer;background:var(--accent);color:#041019;font-weight:700
+    }
+
+    /* Home button */
+    .home-btn{
+      position:fixed;right:18px;bottom:18px;width:48px;height:48px;border-radius:12px;background:#0b1220;border:1px solid rgba(148,163,184,.25);display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.35);cursor:pointer;z-index:60
+    }
+    .home-btn:hover{transform:translateY(-2px)}
+
+    /* Modal */
+    .modal-backdrop{position:fixed;inset:0;background:rgba(2,6,23,.7);display:none;align-items:center;justify-content:center;z-index:70}
+    .modal{width:min(520px,92vw);background:var(--card);border:1px solid rgba(148,163,184,.25);border-radius:18px;padding:20px}
+    .modal h3{margin:0 0 10px 0}
+    .modal .row{display:flex;gap:10px;justify-content:flex-end;margin-top:16px}
+    .ghost{background:transparent;color:var(--text)}
+
+    /* Footer */
+    footer{padding:30px 0;color:var(--muted);text-align:center;border-top:1px solid rgba(148,163,184,.15)}
+
+    @media (max-width:720px){
+      .about{grid-template-columns:1fr}
+      .avatar{margin:0 auto}
+      nav ul{gap:10px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <!-- Home icon inside brand to satisfy the icon requirement -->
+        <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9.5L12 3l9 6.5V21a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1v-6H10v6a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9.5z"/>
+        </svg>
+        <div class="name" id="styledName">Jordan <span>Ng</span></div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#recs">Recommendations</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="about">
+      <div class="about">
+        <div class="avatar">
+          <!-- Unique profile image -->
+          <img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?q=80&w=800&auto=format&fit=crop" alt="Profile portrait of Jordan Ng" />
+        </div>
+        <div>
+          <div class="pill">Graduate data and product enthusiast</div>
+          <h2>About Me</h2>
+          <p>
+            I am Jordan Ng, a recent graduate with a focus on practical data projects and friendly user experience. I enjoy building small tools that help teams work faster and make clearer decisions. I am comfortable with HTML, CSS, and JavaScript on the front end, and I have basic Python and SQL for simple data tasks. I like tidy design and thoughtful details.
+          </p>
+          <p>
+            I am looking for an entry level role where I can learn from a supportive team, contribute to real features, and grow my craft. Outside work I like cycling and coffee tasting.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML logo" />
+          <div>
+            <b>HTML</b>
+            <small class="muted">Semantic layout and accessible structure</small>
+          </div>
+        </div>
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS logo" />
+          <div>
+            <b>CSS</b>
+            <small class="muted">Modern responsive design with grid and flex</small>
+          </div>
+        </div>
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript logo" />
+          <div>
+            <b>JavaScript</b>
+            <small class="muted">DOM work, forms, simple state and fetch</small>
+          </div>
+        </div>
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python logo" />
+          <div>
+            <b>Python</b>
+            <small class="muted">Pandas basics and small scripts</small>
+          </div>
+        </div>
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git logo" />
+          <div>
+            <b>Git</b>
+            <small class="muted">Branching, pull requests and tidy messages</small>
+          </div>
+        </div>
+        <div class="skill">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma logo" />
+          <div>
+            <b>Figma</b>
+            <small class="muted">Wireframes and quick prototypes</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects">
+        <article class="project">
+          <small>Web tool</small>
+          <h3>Habit Tracker</h3>
+          <p>A tiny browser based tracker where users tick off daily habits. Stores data in local storage and gives a simple streak view.</p>
+          <a href="#" aria-disabled="true">View demo</a>
+        </article>
+        <article class="project">
+          <small>Data piece</small>
+          <h3>City Coffee Map</h3>
+          <p>Collects cafe suggestions and plots them on a map with tags. Built with a small script and a free map library.</p>
+          <a href="#" aria-disabled="true">View demo</a>
+        </article>
+        <article class="project">
+          <small>Learning</small>
+          <h3>CSS Layout Study</h3>
+          <p>A set of layout examples using grid and flex. Shows common patterns and how they adapt across screen sizes.</p>
+          <a href="#" aria-disabled="true">View demo</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="recs">
+      <h2>Recommendations</h2>
+      <div class="recs" id="recList">
+        <blockquote class="rec">
+          Jordan was quick to understand our needs and delivered a clean prototype that our team could test at once.
+          <cite>— Product Manager, Finch Apps</cite>
+        </blockquote>
+        <blockquote class="rec">
+          Clear communication and careful attention to detail. The handover notes were easy to follow.
+          <cite>— Team Lead, River Analytics</cite>
+        </blockquote>
+        <blockquote class="rec">
+          Friendly, reliable and curious. Jordan asked good questions and shipped on time.
+          <cite>— Founder, Bean Cart</cite>
+        </blockquote>
+      </div>
+
+      <form id="recForm" autocomplete="off">
+        <textarea id="recText" placeholder="Write a short recommendation" required></textarea>
+        <div class="actions">
+          <input id="recAuthor" type="text" placeholder="Your name and role" required />
+          <button type="submit">Submit</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <button class="home-btn" id="homeBtn" aria-label="Back to top">
+    <svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 9.5L12 3l9 6.5"/>
+      <path d="M9 21V12h6v9"/>
+    </svg>
+  </button>
+
+  <!-- Modal for confirmation -->
+  <div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal">
+      <h3 id="modalTitle">Recommendation submitted</h3>
+      <p>Thank you for your message. It has been added below.</p>
+      <div class="row">
+        <button class="ghost" id="viewBtn">View</button>
+        <button id="closeBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Built for ABC Consultants peer review exercise. Single page portfolio demo.
+  </footer>
+
+  <script>
+    // Smooth scroll to top
+    document.getElementById('homeBtn').addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
+
+    // Add new recommendation with confirmation modal
+    const form = document.getElementById('recForm');
+    const list = document.getElementById('recList');
+    const modal = document.getElementById('modalBackdrop');
+    const closeBtn = document.getElementById('closeBtn');
+    const viewBtn = document.getElementById('viewBtn');
+
+    function openModal(){ modal.style.display = 'flex'; modal.setAttribute('aria-hidden','false'); }
+    function closeModal(){ modal.style.display = 'none'; modal.setAttribute('aria-hidden','true'); }
+
+    closeBtn.addEventListener('click', closeModal);
+    viewBtn.addEventListener('click', () => {
+      closeModal();
+      document.getElementById('recs').scrollIntoView({behavior:'smooth'});
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = document.getElementById('recText').value.trim();
+      const who = document.getElementById('recAuthor').value.trim();
+      if(!text || !who) return;
+
+      const block = document.createElement('blockquote');
+      block.className = 'rec';
+      block.innerText = text + '\n';
+      const cite = document.createElement('cite');
+      cite.innerText = '\u2014 ' + who;
+      block.appendChild(cite);
+      list.prepend(block); // add on top of existing list
+
+      form.reset();
+      openModal();
+    });
+
+    // Highlight current nav link on scroll
+    const sections = ['about','skills','projects','recs'].map(id=>document.getElementById(id));
+    const links = Array.from(document.querySelectorAll('nav a'));
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          links.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`nav a[href="#${entry.target.id}"]`);
+          if(active){ active.classList.add('active'); }
+        }
+      });
+    },{root:null, threshold:0.4});
+    sections.forEach(s=>io.observe(s));
+
+    // Active link style
+    const style = document.createElement('style');
+    style.textContent = `nav a.active{color:var(--accent-2);text-decoration:underline;font-weight:700}`;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
